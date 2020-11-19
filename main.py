@@ -10,6 +10,7 @@ DEPRATED_AFTER = config('DEPRECATED_AFTER', default='30', cast=int)
 @app.route('/c/<path:url>')
 def create_shorturl(url):
     s = Shorturl(url)
+    app.logger.debug(f'Creating shorturl {s.id}')
     db_session.add(s)
     db_session.commit()
     return f'Shorturl: <a href="/{s.id}">/{s.id}</a>'
@@ -22,6 +23,7 @@ def redirect_to_url(shorturl_id):
         s.accessed += 1
         db_session.add(s)
         db_session.commit()
+        app.logger.debug(f'Redirecting user to {s.url}')
         return redirect(s.url)
     except:
         abort(404)
@@ -34,6 +36,7 @@ def deprecate_old_shorturl():
     for s in shorturls:
         db_session.delete(s)
     db_session.commit()
+    app.logger.debug(f'Deleted {len(shorturls)} shorturl')
     return f'{len(shorturls)} shorturls deprecated'
 
 @app.route('/l/')
