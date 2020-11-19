@@ -6,7 +6,6 @@ from decouple import config
 ENGINE_URL = config('ENGINE_URL', default='sqlite:///db.sqlite3')
 
 engine = create_engine(ENGINE_URL, convert_unicode=True)
-# postgresql://user:pass@host:port/dbname
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 Base = declarative_base()
 Base.query = db_session.query_property()

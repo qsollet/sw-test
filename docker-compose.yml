@@ -1,0 +1,37 @@
+version: '2.1'
+
+services:
+  # App container
+  app:
+    build: .
+    container_name: sw-app
+    depends_on:
+      - database
+    environment:
+      - ENGINE_URL=postgresql://sw_user:sw_pass@sw-db/sw_db
+    restart: always
+
+  # Nginx container
+  web:
+    container_name: sw-web
+    image: nginx:stable
+    ports:
+      - "8000:8000"
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/lo.conf:ro
+
+  # Database container
+  database:
+    container_name: sw-db
+    environment:
+      - POSTGRES_USER=sw_user
+      - POSTGRES_PASSWORD=sw_pass
+      - POSTGRES_DB=sw_db
+    image: postgres:9.6
+    restart: always
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+
+volumes:
+  db-volume:

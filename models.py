@@ -1,13 +1,13 @@
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.sql import func
-from .database import Base
+from database import Base
 import random
 import string
 
 class Shorturl(Base):
     __tablename__ = 'shorturls'
     id = Column(String(6), primary_key=True, nullable=False)
-    url = Column(String(50), nullable=False)
+    url = Column(String(500), nullable=False)
     accessed = Column(Integer, default=0)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())

@@ -1,6 +1,6 @@
 from flask import Flask, redirect, abort
-from .database import db_session
-from .models import Shorturl
+from database import db_session, init_db
+from models import Shorturl
 from datetime import datetime, timedelta
 from decouple import config
 
