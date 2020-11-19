@@ -16,6 +16,9 @@ def create_shorturl(url):
 def redirect_to_url(shorturl_id):
     try:
         s = Shorturl.query.filter(Shorturl.id == shorturl_id).first()
+        s.accessed += 1
+        db_session.add(s)
+        db_session.commit()
         return redirect(s.url)
     except:
         abort(404)
