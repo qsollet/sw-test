@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect, abort
 from .database import db_session
 from .models import Shorturl
 
@@ -6,12 +6,19 @@ app = Flask(__name__)
 
 @app.route('/c/<path:url>')
 def create_shorturl(url):
-    return f'shorturl from {url}'
+    s = Shorturl(url)
+    db_session.add(s)
+    db_session.commit()
+    return f'Shorturl: <a href="/{s.id}">/{s.id}</a>'
 
-@app.route('/<string:shorturl>')
-@app.route('/r/<string:shorturl>')
-def redirect_to_url(shorturl):
-    return f'shorturl {shorturl}'
+@app.route('/<string:shorturl_id>')
+@app.route('/r/<string:shorturl_id>')
+def redirect_to_url(shorturl_id):
+    try:
+        s = Shorturl.query.filter(Shorturl.id == shorturl_id).first()
+        return redirect(s.url)
+    except:
+        abort(404)
 
 @app.route('/d/')
 def deprecate_old_shorturl():
