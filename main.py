@@ -9,7 +9,7 @@ def create_shorturl(url):
     return f'shorturl from {url}'
 
 @app.route('/<string:shorturl>')
-@app.route('/r/<shorturl>')
+@app.route('/r/<string:shorturl>')
 def redirect_to_url(shorturl):
     return f'shorturl {shorturl}'
 
