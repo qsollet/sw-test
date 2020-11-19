@@ -27,6 +27,17 @@ def redirect_to_url(shorturl_id):
 def deprecate_old_shorturl():
     return 'deprecate url'
 
+@app.route('/l/')
+def list_shorturl():
+    shorturls = Shorturl.query.all()
+    return {'shorturls': [{
+        'id': s.id,
+        'url': s.url,
+        'accessed': s.accessed,
+        'created_at': s.created_at,
+        'updated_at': s.updated_at
+    } for s in shorturls]}
+
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()

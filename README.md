@@ -15,3 +15,4 @@ Small application to generate and manage shorturl
 - shorturl creation: `/c/<url>`
 - redirection: `/r/<shorturl>` or directly `/<shorturl>`
 - deprecate url: `/d/`
+- list shorturls (for debug): `/l/`
