@@ -1,8 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from decouple import config
 
-engine = create_engine('sqlite:///db.sqlite3', convert_unicode=True)
+ENGINE_URL = config('ENGINE_URL', default='sqlite:///db.sqlite3')
+
+engine = create_engine(ENGINE_URL, convert_unicode=True)
 # postgresql://user:pass@host:port/dbname
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 Base = declarative_base()
