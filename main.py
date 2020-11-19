@@ -1,8 +1,11 @@
 from flask import Flask, redirect, abort
 from .database import db_session
 from .models import Shorturl
+from datetime import datetime, timedelta
+from decouple import config
 
 app = Flask(__name__)
+DEPRATED_AFTER = config('DEPRECATED_AFTER', default='30', cast=int)
 
 @app.route('/c/<path:url>')
 def create_shorturl(url):
@@ -25,7 +28,13 @@ def redirect_to_url(shorturl_id):
 
 @app.route('/d/')
 def deprecate_old_shorturl():
-    return 'deprecate url'
+    # In our case we'll define a shorturl deprecated if not accessed in the last x days
+    filter_before = datetime.today() - timedelta(days = DEPRATED_AFTER)
+    shorturls = Shorturl.query.filter(Shorturl.updated_at < filter_before).all()
+    for s in shorturls:
+        db_session.delete(s)
+    db_session.commit()
+    return f'{len(shorturls)} shorturls deprecated'
 
 @app.route('/l/')
 def list_shorturl():
