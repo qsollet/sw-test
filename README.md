@@ -20,5 +20,5 @@ Small application to generate and manage shorturl
 ## How to run
 
 Start the project with `docker-compose up`, then you can visit http://127.0.0.1:8000
-To create a short url you can use this for example http://127.0.0.1:8000/c/https://www.scaleway.com/
+To create a short url you can use this for example http://127.0.0.1:8000/c/https://www.nextinpact.com/
 To consume the short url just click on the link that is then displayed on the page.
